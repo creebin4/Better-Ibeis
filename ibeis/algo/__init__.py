@@ -3,9 +3,7 @@
 # flake8: noqa
 from __future__ import absolute_import, division, print_function, unicode_literals
 from ibeis.algo import Config
-from ibeis.algo import detect
 from ibeis.algo import hots
-from ibeis.algo import smk
 from ibeis.algo import preproc
 import utool
 print, rrr, profile = utool.inject2(__name__, '[ibeis.algo]')
@@ -60,7 +58,6 @@ def reload_subs(verbose=True):
     def get_reload_subs(mod):
         return getattr(mod, 'reload_subs', wrap_fbrrr(mod))
     get_rrr(Config)(verbose=verbose)
-    get_reload_subs(detect)(verbose=verbose)
     get_reload_subs(hots)(verbose=verbose)
     get_reload_subs(preproc)(verbose=verbose)
     rrr(verbose=verbose)
@@ -73,9 +70,7 @@ rrrr = reload_subs
 
 IMPORT_TUPLES = [
     ('Config', None, False),
-    ('detect', None, True),
     ('hots', None, True),
-    ('smk', None, True),
     ('preproc', None, True),
 ]
 """

@@ -156,7 +156,12 @@ def parse_args():
     commands_argparse(parser2)
     postload_gui_commands_argparse(parser2)
 
-    args, unknown = parser2.parser.parse_known_args()
+    # Use parse_known_args on actual CLI by default. When running under pytest,
+    # avoid interpreting pytest's flags by parsing an empty list for defaults.
+    if os.environ.get('PYTEST_CURRENT_TEST'):
+        args, unknown = parser2.parser.parse_known_args(args=[])
+    else:
+        args, unknown = parser2.parser.parse_known_args()
 
     # Apply any argument postprocessing dependencies here
     args.gui = not args.nogui

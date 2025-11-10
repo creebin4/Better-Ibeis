@@ -54,54 +54,29 @@ from ibeis.control import accessor_decors, controller_inject
 # tuples represent conditional imports with the flags in the first part of the
 # tuple and the modname in the second
 AUTOLOAD_PLUGIN_MODNAMES = [
+    # Core helpers and domain APIs
+    'ibeis.other.ibsfuncs',
+    'ibeis.images',
+    'ibeis.annots',
     'ibeis.annotmatch_funcs',
     'ibeis.tag_funcs',
-    'ibeis.annots',
-    'ibeis.images',
-    'ibeis.other.ibsfuncs',
-    'ibeis.other.detectfuncs',
-    'ibeis.other.detectcore',
-    'ibeis.other.detecttrain',
-    'ibeis.init.filter_annots',
-    'ibeis.control.manual_featweight_funcs',
-    'ibeis.control._autogen_party_funcs',
-    'ibeis.control.manual_annotmatch_funcs',
+    # Controller functionality needed by tests
     'ibeis.control.manual_ibeiscontrol_funcs',
-    'ibeis.control.manual_wildbook_funcs',
-    'ibeis.control.manual_meta_funcs',
-    'ibeis.control.manual_lbltype_funcs',   # DEPRICATE
-    'ibeis.control.manual_lblannot_funcs',  # DEPRICATE
-    'ibeis.control.manual_lblimage_funcs',  # DEPRICATE
     'ibeis.control.manual_image_funcs',
-    'ibeis.control.manual_imageset_funcs',
-    'ibeis.control.manual_gsgrelate_funcs',
-    'ibeis.control.manual_garelate_funcs',
     'ibeis.control.manual_annot_funcs',
-    'ibeis.control.manual_part_funcs',
     'ibeis.control.manual_name_funcs',
-    'ibeis.control.manual_review_funcs',
-    'ibeis.control.manual_test_funcs',
+    'ibeis.control.manual_part_funcs',
+    'ibeis.control.manual_lbltype_funcs',
+    'ibeis.control.manual_lblannot_funcs',
+    'ibeis.control.manual_lblimage_funcs',
     'ibeis.control.manual_species_funcs',
-    'ibeis.control.manual_annotgroup_funcs',
-    #'ibeis.control.manual_dependant_funcs',
-    'ibeis.control.manual_chip_funcs',
+    'ibeis.control.manual_meta_funcs',
+    'ibeis.control.manual_annotmatch_funcs',
     'ibeis.control.manual_feat_funcs',
-    #'ibeis.algo.hots.query_request',
-    'ibeis.web.apis_detect',
-    'ibeis.web.apis_engine',
-    'ibeis.web.apis_query',
-    'ibeis.web.apis_sync',
-    'ibeis.web.apis',
+    'ibeis.control.manual_chip_funcs',
+    # Core depcache-backed tables used implicitly by pipeline
     'ibeis.core_images',
     'ibeis.core_annots',
-    'ibeis.core_parts',
-    'ibeis.algo.smk.vocab_indexer',
-    'ibeis.algo.smk.smk_pipeline',
-    (('--no-cnn', '--nocnn'), 'ibeis_cnn'),
-    (('--no-cnn', '--nocnn'), 'ibeis_cnn._plugin'),
-    #(('--no-fluke', '--nofluke'), 'ibeis_flukematch.plugin'),
-    # (('--no-curvrank', '--nocurvrank'), 'ibeis_curvrank._plugin'),
-    #'ibeis.web.apis_engine',
 ]
 
 """
@@ -602,6 +577,15 @@ class IBEISController(BASE_CLASS):
         ibs.readonly = ibs.db.readonly
 
         if backup_idx is None:
+            # Fast-path: if this is a brand new core DB, initialize to current schema
+            try:
+                from ibeis import constants as const
+                from ibeis.control import DB_SCHEMA_CURRENT as _SCHEMA_CUR
+                if ibs.db.get_db_version() == const.BASE_DATABASE_VERSION:
+                    _SCHEMA_CUR.update_current(ibs.db, ibs=ibs)
+                    ibs.db.set_db_version(_SCHEMA_CUR.VERSION_CURRENT)
+            except Exception:
+                pass
             # Ensure correct schema versions
             _sql_helpers.ensure_correct_version(
                 ibs,
@@ -677,21 +661,31 @@ class IBEISController(BASE_CLASS):
             readonly = None
         else:
             readonly = True
-        ibs.staging = dtool_ibeis.SQLDatabaseController(
+        ibs.sqlstaging = dtool_ibeis.SQLDatabaseController(
             fpath=sqlstaging_fpath, text_factory=six.text_type,
             inmemory=False, readonly=readonly,
             always_check_metadata=False,
         )
-        ibs.readonly = ibs.staging.readonly
+        ibs.readonly = ibs.sqlstaging.readonly
 
         if backup_idx is None:
+            # Fast-path: initialize staging DB to current schema if brand new
+            try:
+                from ibeis import constants as const
+                from ibeis.control import STAGING_SCHEMA_CURRENT as _STAGING_CUR
+                if ibs.sqlstaging.get_db_version() == const.BASE_DATABASE_VERSION:
+                    _STAGING_CUR.update_current(ibs.sqlstaging, ibs=ibs)
+                    ibs.sqlstaging.set_db_version(_STAGING_CUR.VERSION_CURRENT)
+            except Exception:
+                pass
             # Ensure correct schema versions
             _sql_helpers.ensure_correct_version(
                 ibs,
-                ibs.staging,
+                ibs.sqlstaging,
                 ibs.staging_version_expected,
                 STAGING_SCHEMA,
                 verbose=ut.VERBOSE,
+                dobackup=not ibs.readonly
             )
         #import sys
         #sys.exit(1)

@@ -1,0 +1,11 @@
+{
+  "exceedances_count": 0,
+  "exceedances_sample": [],
+  "extra_daids_by_qaid": {},
+  "low_score_skipped_count": 0,
+  "min_score": 4,
+  "missing_daids_by_qaid": {},
+  "reasons": [],
+  "tolerance": 0.25,
+  "tolerance_percent": 25.0
+}

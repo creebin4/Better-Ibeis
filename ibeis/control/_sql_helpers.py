@@ -275,6 +275,8 @@ def ensure_correct_version(ibs, db, version_expected, schema_spec,
                 db.set_db_version(schema_spec.VERSION_CURRENT)
                 if verbose:
                     print('[_SQL] Database version updated (skipped) to %r ' % (schema_spec.VERSION_CURRENT))
+                # For fresh databases, stop here to avoid running legacy incremental updates
+                return
             else:
                 print('[_SQL] Current database is not compatible, updating incrementally...')
         else:

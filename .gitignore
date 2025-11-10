@@ -45,6 +45,9 @@ nosetests.xml
 *.dump.txt
 *.sqlite3
 *.pkg
+./tests/test_images
+*.tif
+
 
 
 #*.ipynb

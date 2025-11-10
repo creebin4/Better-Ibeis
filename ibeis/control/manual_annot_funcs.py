@@ -13,7 +13,10 @@ import utool as ut
 from ibeis.other import ibsfuncs
 from ibeis.util import util_decor
 from ibeis.control.controller_inject import make_ibs_register_decorator
-from ibeis.web import routes_ajax
+try:
+    from ibeis.web import routes_ajax  # type: ignore
+except Exception:  # pragma: no cover
+    routes_ajax = None
 import requests
 print, rrr, profile = ut.inject2(__name__)
 

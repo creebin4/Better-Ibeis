@@ -45,6 +45,19 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from six.moves import zip, range, map
 import numpy as np
 import vtool_ibeis as vt
+
+# Guard: avoid crashing in SVER on 64-bit Windows when the C wrapper expects 32-bit indices.
+# If detected, force the pure-Python SVER path which is slower but stable.
+try:
+    import ctypes as _C
+    import vtool_ibeis.spatial_verification as _vt_sv
+    import vtool_ibeis_ext.sver_c_wrapper as _sver_cw
+    if getattr(vt, 'HAVE_SVER_C_WRAPPER', False) and _C.sizeof(_C.c_size_t) == 8 and getattr(_sver_cw, 'fm_dtype', None) is not None:
+        if _sver_cw.fm_dtype == np.int32:
+            _vt_sv.HAVE_SVER_C_WRAPPER = False
+except Exception:
+    pass
+
 from ibeis.algo.hots import hstypes
 from ibeis.algo.hots import chip_match
 from ibeis.algo.hots import nn_weights
@@ -1425,20 +1438,20 @@ def sver_single_chipmatch(qreq_, cm, verbose=False):
 
             # locals().update(ut.load_data('sver_testdata.pkl'))
 
-            try:
+            # try:
                 # Compute homography from chip2 to chip1 returned homography
                 # maps image1 space into image2 space image1 is a query chip
                 # and image2 is a database chip
-                sv_tup = vt.spatially_verify_kpts(
-                    kpts1, kpts2, fm, xy_thresh, scale_thresh, ori_thresh,
-                    dlen_sqrd2, min_nInliers, match_weights=match_weights,
-                    full_homog_checks=full_homog_checks, refine_method=refine_method,
-                    returnAff=True)
-            except Exception as ex:
-                ut.printex(ex, 'Unknown error in spatial verification.',
-                           keys=['kpts1', 'kpts2',  'fm', 'xy_thresh',
-                                 'scale_thresh', 'dlen_sqrd2', 'min_nInliers'])
-                sv_tup = None
+            sv_tup = vt.spatially_verify_kpts(
+                kpts1, kpts2, fm, xy_thresh, scale_thresh, ori_thresh,
+                dlen_sqrd2, min_nInliers, match_weights=match_weights,
+                full_homog_checks=full_homog_checks, refine_method=refine_method,
+                returnAff=True) 
+            # except Exception as ex:
+            #     ut.printex(ex, 'Unknown error in spatial verification.',
+            #                keys=['kpts1', 'kpts2',  'fm', 'xy_thresh',
+            #                      'scale_thresh', 'dlen_sqrd2', 'min_nInliers'])
+            #     sv_tup = None
         svtup_list.append(sv_tup)
 
     # <SENTINAL>

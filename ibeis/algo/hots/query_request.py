@@ -248,8 +248,11 @@ def apply_species_with_detector_hack(ibs, cfgdict, qaids, daids,
     aid_list = set(it.chain(qaids, daids))
     unique_species = ibs.get_database_species(aid_list)
     # turn off featureweights when not absolutely sure they are ok to us,)
-    candetect = (len(unique_species) == 1 and
-                 ibs.has_species_detector(unique_species[0]))
+    try:
+        candetect = (len(unique_species) == 1 and
+                     ibs.has_species_detector(unique_species[0]))
+    except Exception:
+        candetect = False
     if not candetect:
         if ut.NOT_QUIET:
             ut.cprint(

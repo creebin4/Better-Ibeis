@@ -1,0 +1,190 @@
+{
+  "cfgstr": "_QPCC_UUIDS-a17-vlhxjcqdvzlygbsy_DPCC_UUIDS-a17-n17-vlhxjcqdvzlygbsy_vsmany_NN(single,K=4,Kn=1,padk=False,cks800)_NNWeight(lnbnn,last,nosqrd_dist)_SV(0.01;2.0;1.57minIn=4,nNRR=40,nARR=3,nsum,cdl,+wi,+fc,)_AGG(nsum)_FLANN(8_kdtrees)",
+  "images": [
+    "20201102_SA78492.tif",
+    "20201102_SA78507.tif",
+    "20201102_SA78509.tif",
+    "20201102_SA78511.tif",
+    "20201102_SA78529.tif",
+    "20201102_SA78530.tif",
+    "20201102_SA78542.tif",
+    "20201102_SA78546.tif",
+    "20201102_SA78551.tif",
+    "20201102_SA78556.tif",
+    "20201104_SA78613.tif",
+    "20201104_SA78616.tif",
+    "20201104_SA78624.tif",
+    "20201104_SA78631.tif",
+    "20201104_SA78646.tif",
+    "20201104_SA78662.tif",
+    "20201104_SA78665.tif"
+  ],
+  "qaids": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+  ],
+  "results": [
+    {
+      "qaid": 1,
+      "ranking": [
+        {
+          "daid": 12,
+          "score": 378.5379392685129
+        }
+      ]
+    },
+    {
+      "qaid": 2,
+      "ranking": []
+    },
+    {
+      "qaid": 3,
+      "ranking": [
+        {
+          "daid": 14,
+          "score": 325.6896727625833
+        }
+      ]
+    },
+    {
+      "qaid": 4,
+      "ranking": [
+        {
+          "daid": 11,
+          "score": 262.75669260304926
+        }
+      ]
+    },
+    {
+      "qaid": 5,
+      "ranking": [
+        {
+          "daid": 17,
+          "score": 382.0296103815596
+        }
+      ]
+    },
+    {
+      "qaid": 6,
+      "ranking": [
+        {
+          "daid": 13,
+          "score": 362.32821964004916
+        }
+      ]
+    },
+    {
+      "qaid": 7,
+      "ranking": []
+    },
+    {
+      "qaid": 8,
+      "ranking": [
+        {
+          "daid": 9,
+          "score": 4.898958458413358
+        }
+      ]
+    },
+    {
+      "qaid": 9,
+      "ranking": [
+        {
+          "daid": 16,
+          "score": 12.385925725070777
+        },
+        {
+          "daid": 8,
+          "score": 5.306203740108474
+        }
+      ]
+    },
+    {
+      "qaid": 10,
+      "ranking": [
+        {
+          "daid": 15,
+          "score": 241.6058712179052
+        }
+      ]
+    },
+    {
+      "qaid": 11,
+      "ranking": [
+        {
+          "daid": 4,
+          "score": 271.71405857612507
+        }
+      ]
+    },
+    {
+      "qaid": 12,
+      "ranking": [
+        {
+          "daid": 1,
+          "score": 375.7572897023496
+        }
+      ]
+    },
+    {
+      "qaid": 13,
+      "ranking": [
+        {
+          "daid": 6,
+          "score": 367.2203220468198
+        }
+      ]
+    },
+    {
+      "qaid": 14,
+      "ranking": [
+        {
+          "daid": 3,
+          "score": 329.14144061777046
+        }
+      ]
+    },
+    {
+      "qaid": 15,
+      "ranking": [
+        {
+          "daid": 10,
+          "score": 242.3937891585211
+        }
+      ]
+    },
+    {
+      "qaid": 16,
+      "ranking": [
+        {
+          "daid": 9,
+          "score": 11.886258447660005
+        }
+      ]
+    },
+    {
+      "qaid": 17,
+      "ranking": [
+        {
+          "daid": 5,
+          "score": 381.61332074203233
+        }
+      ]
+    }
+  ]
+}
